@@ -1,0 +1,67 @@
+---
+title: "assignment9"
+author: "Marc Schwenk"
+date: "10/19/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r echo=FALSE}
+#import nfl combine data
+nfldata <- read.csv("C:\\Users\\marcs\\OneDrive\\Documents\\sportsvizsunday-nfl-combine-data\\data\\combine_results.csv")
+```
+
+```{r echo=FALSE}
+library(ggplot2)
+library(dplyr)
+qplot(X40_yard, data=nfldata, geom="histogram")
+```
+
+```{r echo=FALSE}
+ggplot(data = nfldata) + geom_bar(mapping = aes(x = X40_yard, fill=pos))
+```
+
+```{r echo=FALSE}
+#which position runs the fastest average 40 yard dash?
+boxplot(X40_yard~pos, data = nfldata, main = "40 yard dash time by position", ylab = "Time (seconds)", xlab = "Position", col= "blue", border = "red")
+```
+
+```{r echo=FALSE}
+summary(nfldata$X40_yard)
+```
+
+```{r echo=FALSE}
+ggplot(nfldata, aes(x=pos, y=X40_yard, fill = pos)) + geom_violin(alpha = 0.4)+ theme(legend.position = "none")
+```
+
+```{r echo=FALSE}
+ggplot(nfldata, aes(x =bench_press, y = X40_yard, color = pos))+geom_jitter()
+```
+
+```{r echo=FALSE}
+arranged = arrange(nfldata,X40_yard)
+top_10 = arranged[1:10,]
+ggplot(top_10,aes(pos,X40_yard, fill= X40_yard))+
+  geom_bar(stat = "identity")+
+  ggtitle("Top 10 Fastest 40 times." ) +
+  theme(legend.position = "side")+coord_flip()
+```
+
+
+```{r echo=FALSE}
+quant <- aov(X40_yard ~ pos, data = nfldata)
+quant2 <-aov(X40_yard ~ pos, data = top_10)
+summary(quant)
+summary(quant2)
+```
+
+
+
+
+
+
+
+
